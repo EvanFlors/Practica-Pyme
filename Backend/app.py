@@ -1,10 +1,10 @@
-# app.py
 from flask import Flask
 from flask_cors import CORS
 from controllers.question_controller import QuestionController
 from controllers.response_controller import ResponseController
 from controllers.prediction_controller import PredictionController
-from controllers.advice_controller import AdviceController  # Importando el controlador de consejos
+from controllers.advice_controller import AdviceController 
+from controllers.email_controller import EmailController 
 
 app = Flask(__name__)
 CORS(app)
@@ -27,6 +27,9 @@ app.add_url_rule("/get/advice", view_func=AdviceController.get_advices_by_sectio
 app.add_url_rule("/save/advice", view_func=AdviceController.save_advice, methods=["POST"])
 app.add_url_rule("/update/advice", view_func=AdviceController.update_advice, methods=["PUT"])
 app.add_url_rule("/delete/advice", view_func=AdviceController.delete_advice, methods=["DELETE"])
+
+# Endpoint para enviar correos
+app.add_url_rule('/send-email', view_func=EmailController.send_email, methods=['POST'])    
 
 if __name__ == "__main__":
     app.run()

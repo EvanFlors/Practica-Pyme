@@ -14,7 +14,7 @@ const calculateSectionPercentage = (section, formDataEntries) => {
   return (totalScore / maxScore) * 100;
 };
 
-const Survey = ({ onFinish }) => {
+const Survey = ({ onFinish, addResponse, startSurvey }) => {
   const formRef = useRef();
 
   const [section, setSection] = useState([]);
@@ -29,12 +29,14 @@ const Survey = ({ onFinish }) => {
       setLoading(true);
         const response = await fetch("http://localhost:5000/get/questions");
         if (!response.ok) {
-          throw new Error("Problemas al obtener las preguntas. Intente más tarde.");
+          throw new Error('Problemas al obtener las preguntas. Intente más tarde.');
         }
         const data = await response.json();
         setSection(data);
       } catch (error) {
         console.error(error);
+        addResponse("Problemas al obtener las preguntas. Intente más tarde.", false);
+        startSurvey(false)
       } finally {
         setLoading(false);
       }
