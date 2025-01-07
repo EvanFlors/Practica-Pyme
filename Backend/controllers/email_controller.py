@@ -1,18 +1,18 @@
+import os
 import requests
+from dotenv import load_dotenv
 from flask import request, jsonify
 
 class EmailController:
   @staticmethod
   def send_email():
     try:
-        # Obtén los datos del cuerpo de la solicitud
         data = request.json
         from_email = data.get('from')
         to_email = data.get('to')
         subject = data.get('subject')
         html_content = data.get('html')
 
-        # Realiza la solicitud a la API de Resend
         response = requests.post(
             'https://api.resend.com/emails',
             json={
@@ -22,12 +22,11 @@ class EmailController:
                 "html": html_content
             },
             headers={
-                "Authorization": "Bearer re_9yrr8f3R_8BqaM2xCUstVr3hyVFek8oef",
+                "Authorization": f"Bearer {os.getenv('RESEND_API_KEY')}",
                 "Content-Type": "application/json"
             }
         )
 
-        # Devuelve la respuesta de la API
         if response.status_code == 200:
             return jsonify(response.json()), 200
         else:

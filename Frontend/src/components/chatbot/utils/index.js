@@ -58,7 +58,7 @@ export const fetchBotResponse = async (userMessage, addResponse, setIsLoading) =
   }
 };
 
-export const fetchEmailSender = async ({ from, to, subject, html }, addResponse, setIsLoading) => {
+export const fetchEmailSender = async ({ from, to, subject, html }, addResponse) => {
   try {
     const response = await fetch('http://localhost:5000/send-email', {
       method: 'POST',
