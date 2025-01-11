@@ -4,7 +4,7 @@ import Loader from "./Loader";
 import Message from "./Message";
 import "./Chat.css";
 import {
-  fetchAdvices,
+  // fetchAdvices,
   fetchBotResponse,
   fetchEmailSender,
   fetchSaveAnswer,
@@ -23,31 +23,31 @@ const Chatbot = () => {
     setIsLoading(true);
     setSurveyActive(false);
 
+    const filteredSections = results.filter(
+      (section) => section.percentage < 70
+    ).map((section) => ({
+      section: section.section,
+      responses: section.responses.filter(
+        (response) => response.answer === "0" || response.answer === "1"
+      ),
+    }));
+
     const resultsPercentage = formatResults(results);
     await sleep(1000);
 
     addResponse(`Tus resultados son\n${resultsPercentage}`, false);
 
-    const advices = await fetchAdvices(results);
-
     await sleep(1000);
 
-    if (advices.length > 0) {
-      const advicesHtml = advices.map((advice) => `<p><strong>${advice.section}:</strong> ${advice.advice}</p></br>`).join("");
-
-      const emailResponse = `<p>Te sugerimos lo siguiente: </br></p>` +
-                            `<p>${advicesHtml}</p>`
-
-      await fetchEmailSender(
-        {
-          from: "onboarding@resend.dev",
-          to: results[0].responses[1].answer,
-          subject: "Consultorías para tu negocio 🚀",
-          html: emailResponse,
-        },
-        addResponse
-      );
-    }
+    await fetchEmailSender(
+      {
+        from: "onboarding@resend.dev",
+        to: results[0].responses[1].answer,
+        subject: "Consultorías para tu negocio 🚀",
+        results: filteredSections,
+      },
+      addResponse
+    );
 
     fetchSaveAnswer(results, addResponse, setIsLoading);
     setIsLoading(false);

@@ -58,23 +58,26 @@ export const fetchBotResponse = async (userMessage, addResponse, setIsLoading) =
   }
 };
 
-export const fetchEmailSender = async ({ from, to, subject, html }, addResponse) => {
+export const fetchEmailSender = async ({ from, to, subject, results }, addResponse) => {
   try {
     const response = await fetch('http://localhost:5000/send-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        from, to, subject, html}),
+      body: JSON.stringify({ from, to, subject, results}),
     });
 
     if (!response.ok) {
-      throw new Error('Error al enviar el correo');
+      const errorResponse = await response.json();
+      if (response.status === 403) {
+        throw new Error('El correo no existe.');
+      }
+      throw new Error(errorResponse.message || 'Error al enviar el correo.');
     }
 
     addResponse("Hemos enviado a tu correo los resultados y sugerencias.", false);
   } catch (error) {
-    console.error(error);
-    addResponse("Estoy teniendo problemas. Intente más tarde", false);
+    console.error('Error:', error);
+    addResponse(`${error.message}. Intente más tarde.`, false);
   }
 };
 
