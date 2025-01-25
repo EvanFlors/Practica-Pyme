@@ -27,7 +27,7 @@ const Survey = ({ onFinish, addResponse, startSurvey }) => {
     const fetchQuestions = async () => {
       try {
       setLoading(true);
-        const response = await fetch("http://localhost:5000/get/questions");
+        const response = await fetch(import.meta.env.VITE_BACKEND_URL + "get/questions");
         if (!response.ok) {
           throw new Error('Problemas al obtener las preguntas. Intente más tarde.');
         }

@@ -1,12 +1,14 @@
 // utils.js
 
+const url_base = import.meta.env.VITE_BACKEND_URL
+
 export const fetchAdvices = async (results) => {
   let advices = [];
 
   for (let result of results) {
     if (result.percentage < 60) {
       try {
-        const response = await fetch("http://127.0.0.1:5000/get/advice", {
+        const response = await fetch(url_base + "get/advice", {
           method: "POST", 
           headers: {
             "Content-Type": "application/json",
@@ -38,7 +40,7 @@ export const fetchAdvices = async (results) => {
 
 export const fetchBotResponse = async (userMessage, addResponse, setIsLoading) => {
   try {
-    const response = await fetch("http://127.0.0.1:5000/predict", {
+    const response = await fetch(url_base + "predict", {
       method: "POST",
       body: JSON.stringify({ message: userMessage }),
       headers: { "Content-Type": "application/json" },
@@ -60,7 +62,7 @@ export const fetchBotResponse = async (userMessage, addResponse, setIsLoading) =
 
 export const fetchEmailSender = async ({ from, to, subject, results }, addResponse) => {
   try {
-    const response = await fetch('http://localhost:5000/send-email', {
+    const response = await fetch(url_base + 'send-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ from, to, subject, results}),
@@ -83,7 +85,7 @@ export const fetchEmailSender = async ({ from, to, subject, results }, addRespon
 
 export const fetchSaveAnswer = async (results, addResponse, setIsLoading) => {
   try {
-    const response = await fetch("http://127.0.0.1:5000/save/response", {
+    const response = await fetch(url_base + "save/response", {
       method: "POST",
       body: JSON.stringify({ results: results }),
       headers: { "Content-Type": "application/json" },
