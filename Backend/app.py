@@ -5,6 +5,7 @@ from controllers.response_controller import ResponseController
 from controllers.prediction_controller import PredictionController
 from controllers.advice_controller import AdviceController 
 from controllers.email_controller import EmailController 
+import os  # Import os to access environment variables
 
 app = Flask(__name__)
 CORS(app)
@@ -29,7 +30,9 @@ app.add_url_rule("/update/advice", view_func=AdviceController.update_advice, met
 app.add_url_rule("/delete/advice", view_func=AdviceController.delete_advice, methods=["DELETE"])
 
 # Endpoint para enviar correos
-app.add_url_rule('/send-email', view_func=EmailController.send_email, methods=['POST'])    
+app.add_url_rule('/send-email', view_func=EmailController.send_email, methods=['POST'])
 
 if __name__ == "__main__":
-    app.run()
+    # Bind to the PORT environment variable or default to 5000
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
