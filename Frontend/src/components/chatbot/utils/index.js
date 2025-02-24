@@ -60,6 +60,27 @@ export const fetchBotResponse = async (userMessage, addResponse, setIsLoading) =
   }
 };
 
+export const fetchAdvicesIA = async (results, addResponse) => {
+  try {
+    const response = await fetch(url_base + "advices", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ results }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Problemas al obtener las sugerencias. Intente más tarde.");
+    }
+
+    const data = await response.json();
+    addResponse(data, false);
+
+  } catch (error) {
+    console.error('Error:', error);
+    addResponse(`${error.message}. Intente más tarde.`, false);
+  }
+};
+
 export const fetchEmailSender = async ({ from, to, subject, results }, addResponse) => {
   try {
     const response = await fetch(url_base + 'send-email', {

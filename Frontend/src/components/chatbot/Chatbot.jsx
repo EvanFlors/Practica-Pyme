@@ -6,7 +6,8 @@ import "./Chat.css";
 import {
   // fetchAdvices,
   fetchBotResponse,
-  fetchEmailSender,
+  // fetchEmailSender,
+  fetchAdvicesIA,
   fetchSaveAnswer,
   formatResults,
 } from "./utils";
@@ -39,7 +40,7 @@ const Chatbot = () => {
 
     await sleep(1000);
 
-    await fetchEmailSender(
+    /* await fetchEmailSender(
       {
         from: "onboarding@resend.dev",
         to: results[0].responses[1].answer,
@@ -47,7 +48,9 @@ const Chatbot = () => {
         results: filteredSections,
       },
       addResponse
-    );
+    ); */
+
+    await fetchAdvicesIA(filteredSections, addResponse);
 
     fetchSaveAnswer(results, addResponse, setIsLoading);
     setIsLoading(false);
