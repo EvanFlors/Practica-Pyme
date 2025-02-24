@@ -31,8 +31,9 @@ app.add_url_rule("/delete/advice", view_func=AdviceController.delete_advice, met
 
 # Endpoint para enviar correos
 app.add_url_rule('/send-email', view_func=EmailController.send_email, methods=['POST'])
+app.add_url_rule('/advices', view_func=EmailController.send_advice, methods=['POST'])
 
 if __name__ == "__main__":
-    # Bind to the PORT environment variable or default to 5000
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+  # Bind to the PORT environment variable or default to 5000
+  port = int(os.environ.get("PORT", 5000))
+  app.run(host="0.0.0.0", port=port)
