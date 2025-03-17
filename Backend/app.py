@@ -10,6 +10,10 @@ import os  # Import os to access environment variables
 app = Flask(__name__)
 CORS(app)
 
+@app.route("/", methods=["GET"])
+def index():
+  return "Hello, World!"
+
 # Rutas para el controlador de preguntas
 app.add_url_rule("/get/questions", view_func=QuestionController.get_questions, methods=["GET"])
 app.add_url_rule("/get/question/<id>", view_func=QuestionController.get_question, methods=["GET"])
